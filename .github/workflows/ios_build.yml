@@ -1,0 +1,84 @@
+name: iOS Build (Kotlin Multiplatform)
+
+# Builds the :shared Kotlin Multiplatform / Compose Multiplatform framework and
+# the iosApp Xcode project on a hosted macOS runner. This exists so the iOS
+# port can be built, validated and (eventually) shipped without needing local
+# Mac hardware. Currently this only validates the foundation/scaffolding
+# (Phase 0 of ios_port_plan.md) - it does not yet build the full-featured app.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["**"]
+    paths:
+      - "shared/**"
+      - "lrclib/**"
+      - "iosApp/**"
+      - "gradle/libs.versions.toml"
+      - "settings.gradle.kts"
+      - ".github/workflows/ios_build.yml"
+  pull_request:
+    paths:
+      - "shared/**"
+      - "lrclib/**"
+      - "iosApp/**"
+      - "gradle/libs.versions.toml"
+      - "settings.gradle.kts"
+      - ".github/workflows/ios_build.yml"
+
+jobs:
+  build_ios:
+    name: Build iOS app (simulator)
+    runs-on: macos-15
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v5
+        with:
+          java-version: "21"
+          distribution: "temurin"
+
+      - name: Set Up Gradle
+        uses: gradle/actions/setup-gradle@v5
+        with:
+          cache-encryption-key: ${{ secrets.GRADLE_CACHE_KEY }}
+          cache-cleanup: on-success
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Select Xcode version
+        run: sudo xcode-select -switch /Applications/Xcode.app
+
+      - name: Build shared Kotlin/Native modules (sanity check)
+        run: ./gradlew --console=plain :shared:linkDebugFrameworkIosSimulatorArm64 :lrclib:compileKotlinIosSimulatorArm64 --warning-mode summary
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode project
+        working-directory: iosApp
+        run: xcodegen generate
+
+      - name: Build iosApp for iOS Simulator
+        working-directory: iosApp
+        run: |
+          xcodebuild \
+            -project iosApp.xcodeproj \
+            -scheme iosApp \
+            -destination "generic/platform=iOS Simulator" \
+            -configuration Debug \
+            CODE_SIGNING_ALLOWED=NO \
+            build
+
+      - name: Upload build log on failure
+        if: failure()
+        uses: actions/upload-artifact@v6
+        with:
+          name: ios-build-logs
+          path: |
+            iosApp/build/
+            shared/build/outputs/
+          if-no-files-found: ignore
