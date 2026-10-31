@@ -1,2 +1,4 @@
-# The root .gitignore has a bare "core" rule that would otherwise hide ultra/core/.
-!/core/
+# The root .gitignore has a bare "core" rule (meant for core dumps) that would otherwise hide every
+# directory named "core" below here: ultra/core/ itself, and also the Kotlin package directories
+# (src/*/kotlin/ultra/core/<module>/) inside each module. Hence unanchored, unlike "/core/".
+!core/

@@ -14,7 +14,12 @@
 val ultraModules = listOf(
     "hooks",   // seam contracts + UltraHooks registry (no-op defaults); depends on nothing ultra
     "wiring",  // Hilt multibindings + androidx.startup initializer that fill UltraHooks
-    // later: "core/model", "feature/oled", ...
+    "core/model",       // KMP: domain types + ports (PlaybackEnginePort, EqPort, LibraryPort)
+    "core/resilience",  // KMP: backoff + jitter, retry, circuit breaker, bulkhead, health registry
+    "core/dsp",         // KMP: dB math, biquads, windows, FFT, K-weighting, BS.1770 loudness meter
+    "core/network",     // KMP: instance registry + failover over resilience, HttpProfile/HttpClientProvider (OkHttp in jvmCommon)
+    "core/data",        // KMP: Room ultra.db (bundled SQLite) + DataStore ultra.preferences_pb, isolated from upstream's
+    // later: "feature/oled", ...
 )
 
 ultraModules.forEach { path ->
@@ -25,6 +30,23 @@ ultraModules.forEach { path ->
     val projectName = "ultra-" + path.replace('/', '-')
     include(":$projectName")
     project(":$projectName").projectDir = moduleDir
+}
+
+// One command for the tests of every core module: ./gradlew ultraCoreTest
+// KMP modules run on both the JVM and the Android host target (`allTests`). :ultra-core-data only has
+// JVM tests: on Android, Room needs a real Context, which host tests don't have.
+gradle.rootProject {
+    tasks.register("ultraCoreTest") {
+        group = "verification"
+        description = "Runs the tests of every ultra core module."
+        dependsOn(
+            ":ultra-core-model:allTests",
+            ":ultra-core-resilience:allTests",
+            ":ultra-core-dsp:allTests",
+            ":ultra-core-network:allTests",
+            ":ultra-core-data:jvmTest",
+        )
+    }
 }
 
 // Ultra-only version catalog (accessor `ultraLibs`), kept apart from upstream's `libs`.

@@ -1,15 +1,23 @@
 # Version catalog for the ultra layer only (accessor: ultraLibs). Upstream's gradle/libs.versions.toml
-# stays untouched. Anything upstream already declares (compose, hilt, media3, ktor, junit, ...) is
+# stays untouched. Anything upstream already declares (compose, hilt, media3, ktor, room, junit, ...) is
 # read from `libs`, never duplicated here, so ultra modules can't drift from the app's versions.
 #
-# The two entries below are androidx artifacts upstream only receives transitively. Each version
-# is what :app resolves today (checked with `:app:dependencies`); Gradle takes the highest requested
-# version, so declaring them can never downgrade what upstream resolves.
+# Every entry below is a library upstream only receives transitively (or not at all). Where the app
+# already resolves it, the version here is exactly what :app resolves today (checked with
+# `:app:dependencies`); Gradle takes the highest requested version, so declaring them can never
+# downgrade what upstream resolves. Re-check these whenever upstream bumps androidx or coroutines.
 
 [versions]
 startup = "1.2.0"
 annotation = "1.10.0"
+coroutines = "1.11.0"   # same as upstream's coroutines-guava, which tracks kotlinx.coroutines
+sqlite = "2.6.2"        # androidx.sqlite resolved by Room 2.8.5
+datastore = "1.2.1"     # same as upstream's `datastore` (the app pulls -core in transitively)
 
 [libraries]
 startup-runtime = { module = "androidx.startup:startup-runtime", version.ref = "startup" }
 androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "annotation" }
+coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
+sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
+datastore-preferences-core = { module = "androidx.datastore:datastore-preferences-core", version.ref = "datastore" }
