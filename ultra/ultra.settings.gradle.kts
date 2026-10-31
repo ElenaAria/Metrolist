@@ -19,6 +19,7 @@ val ultraModules = listOf(
     "core/dsp",         // KMP: dB math, biquads, windows, FFT, K-weighting, BS.1770 loudness meter
     "core/network",     // KMP: instance registry + failover over resilience, HttpProfile/HttpClientProvider (OkHttp in jvmCommon)
     "core/data",        // KMP: Room ultra.db (bundled SQLite) + DataStore ultra.preferences_pb, isolated from upstream's
+    "feature/dsp",      // Android: Smart DJ transition engine + device-aware profiles, plugged into seam S6 (and S8/S9 for its screen)
     // later: "feature/oled", ...
 )
 
@@ -46,6 +47,13 @@ gradle.rootProject {
             ":ultra-core-network:allTests",
             ":ultra-core-data:jvmTest",
         )
+    }
+
+    // The feature modules are Android libraries, so their tests are plain JVM unit tests.
+    tasks.register("ultraFeatureTest") {
+        group = "verification"
+        description = "Runs the tests of every ultra feature module."
+        dependsOn(":ultra-feature-dsp:testDebugUnitTest")
     }
 }
 

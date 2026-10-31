@@ -15,6 +15,9 @@ dependencies {
     // references its classes; being on the runtime classpath is what activates it (manifest merge
     // registers the initializer, Hilt's aggregating task picks up its modules).
     "implementation"(project(":ultra-wiring"))
+    // Smart DJ engine: contributes through Hilt multibindings like any other feature, so nothing in
+    // :app calls into it except the CrossfadePort adapter in com.metrolist.music.ultra.
+    "implementation"(project(":ultra-feature-dsp"))
 }
 
 /*

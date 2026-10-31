@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ultra_dj_title">Smart DJ</string>
+    <string name="ultra_dj_summary">Shapes upstream\'s crossfade like a DJ: the outgoing track\'s bass leaves while the incoming track\'s bass arrives, with an echo-out. It needs crossfade to be on; it cannot start one by itself.</string>
+
+    <string name="ultra_dj_section_status">Status</string>
+    <string name="ultra_dj_status_label">Engine</string>
+    <string name="ultra_dj_status_off">Off</string>
+    <string name="ultra_dj_status_waiting_crossfade">Waiting: crossfade is off, so there is no overlap to shape</string>
+    <string name="ultra_dj_status_armed">Armed: waiting for the next crossfade</string>
+    <string name="ultra_dj_status_mixing">Mixing: %1$d%%</string>
+    <string name="ultra_dj_crossfade">Crossfade (Metrolist setting)</string>
+    <string name="ultra_dj_crossfade_on">On, %1$.1f s</string>
+    <string name="ultra_dj_crossfade_off">Off</string>
+    <string name="ultra_dj_crossfade_unavailable">Unavailable</string>
+    <string name="ultra_dj_crossfade_turn_on">Turn on crossfade (6 s)</string>
+
+    <string name="ultra_dj_section_output">Output device</string>
+    <string name="ultra_dj_output_device">Device</string>
+    <string name="ultra_dj_output_none">Nothing detected</string>
+    <string name="ultra_dj_output_source_os">Reported by Android</string>
+    <string name="ultra_dj_output_source_guess">Best guess (Android does not report the route below Android 13)</string>
+    <string name="ultra_dj_output_profile">Active profile</string>
+    <string name="ultra_dj_profile_auto_suffix">%1$s (automatic)</string>
+    <string name="ultra_dj_profile_manual_suffix">%1$s (manual)</string>
+    <string name="ultra_dj_car_toggle">Treat \"%1$s\" as car audio</string>
+    <string name="ultra_dj_car_note">Android cannot tell a car stereo from earbuds. A Bluetooth name containing a car brand word is treated as a car; this switch overrides it.</string>
+
+    <string name="ultra_dj_kind_speaker">Phone speaker</string>
+    <string name="ultra_dj_kind_wired">Wired headphones</string>
+    <string name="ultra_dj_kind_usb">USB audio</string>
+    <string name="ultra_dj_kind_bluetooth">Bluetooth</string>
+    <string name="ultra_dj_kind_car">Car</string>
+    <string name="ultra_dj_kind_hdmi">HDMI</string>
+    <string name="ultra_dj_kind_other">Other</string>
+
+    <string name="ultra_dj_profile_speaker">Speaker</string>
+    <string name="ultra_dj_profile_wired">Wired</string>
+    <string name="ultra_dj_profile_bluetooth">Bluetooth</string>
+    <string name="ultra_dj_profile_car">Car</string>
+    <string name="ultra_dj_profile_studio">Studio (USB / DAC)</string>
+
+    <string name="ultra_dj_section_settings">Settings</string>
+    <string name="ultra_dj_enabled">Smart DJ engine</string>
+    <string name="ultra_dj_profile_choice">Profile</string>
+    <string name="ultra_dj_profile_auto">Automatic (follow the output device)</string>
+
+    <string name="ultra_dj_section_diagnostics">Diagnostics</string>
+    <string name="ultra_dj_diag_decks">Active audio sinks</string>
+    <string name="ultra_dj_diag_mixed">Transitions mixed</string>
+    <string name="ultra_dj_diag_last">Last transition</string>
+    <string name="ultra_dj_diag_last_value">%1$.1f s</string>
+    <string name="ultra_dj_diag_none">None yet</string>
+    <string name="ultra_dj_diag_peak">Peaks bent by the soft ceiling</string>
+    <string name="ultra_dj_diag_path">Signal path</string>
+    <string name="ultra_dj_diag_path_value">Float32 DSP, 16-bit PCM to the audio sink, TPDF dither only while mixing</string>
+</resources>
